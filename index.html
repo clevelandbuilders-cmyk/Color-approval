@@ -18,7 +18,6 @@
     --error: #8b2000;
     --success: #2d5a27;
     --section-bg: #faf7f2;
-    --locked: #f0ece4;
   }
 
 - { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,7 +31,6 @@ min-height: 100vh;
 padding: 0 0 80px;
 }
 
-/* ── HEADER ── */
 .form-header {
 background: var(–ink);
 color: var(–cream);
@@ -54,17 +52,6 @@ background: repeating-linear-gradient(-45deg,transparent,transparent 28px,rgba(2
 h1 { font-family: ‘Playfair Display’, serif; font-size: clamp(26px, 5vw, 40px); font-weight: 700; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 16px; }
 .header-sub { font-size: 13px; letter-spacing: 0.5px; color: rgba(245,240,232,0.55); line-height: 1.6; }
 
-/* ── MODE BANNER ── */
-.mode-banner {
-display: flex; align-items: center; gap: 10px;
-padding: 10px 40px;
-font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600;
-}
-.mode-banner.contractor { background: #2a4a8c; color: #adc4ff; }
-.mode-banner.customer { background: #1a4a2a; color: #a0d4b0; }
-.mode-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
-
-/* ── ACTION BAR ── */
 .action-bar {
 background: var(–ink);
 border-top: 1px solid rgba(255,255,255,0.1);
@@ -85,14 +72,10 @@ display: flex; align-items: center; gap: 8px;
 .btn-outline:hover { border-color: var(–accent-light); color: var(–accent-light); }
 .btn-gold { background: var(–accent); color: #fff; }
 .btn-gold:hover { background: var(–accent-light); }
-.btn-blue { background: #2a4a8c; color: #fff; }
-.btn-blue:hover { background: #3a5aaa; }
 .btn-submit { background: var(–success); color: #fff; }
 .btn-submit:hover { background: #3a7533; }
 .btn svg { width: 14px; height: 14px; }
-.btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-/* ── BODY ── */
 .form-body { max-width: 780px; margin: 0 auto; padding: 0 24px; }
 
 .section {
@@ -149,11 +132,80 @@ padding-right: 36px;
 textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 input[type=“date”] { cursor: pointer; }
 
-/* ── LOCKED (read-only) fields in customer mode ── */
+.upload-zone {
+border: 2px dashed var(–rule);
+border-radius: 4px;
+padding: 32px 24px;
+text-align: center;
+cursor: pointer;
+transition: border-color 0.2s, background 0.2s;
+background: #fff;
+position: relative;
+}
+.upload-zone:hover, .upload-zone.dragover { border-color: var(–accent); background: rgba(139,105,20,0.04); }
+.upload-zone input[type=“file”] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+.upload-icon { font-size: 28px; margin-bottom: 8px; }
+.upload-text { font-size: 13px; color: #777; }
+.upload-text strong { color: var(–accent); font-weight: 500; }
+.upload-preview { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.upload-preview img { width: 80px; height: 80px; object-fit: cover; border-radius: 2px; border: 1px solid var(–rule); }
+
+.checkbox-field {
+background: #fff;
+border: 1px solid var(–rule);
+border-radius: 2px;
+padding: 16px;
+display: flex; gap: 14px; align-items: flex-start;
+cursor: pointer;
+transition: border-color 0.2s;
+}
+.checkbox-field:hover { border-color: var(–accent); }
+.checkbox-field input[type=“checkbox”] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(–accent); margin-top: 2px; cursor: pointer; }
+.checkbox-text { font-size: 13px; line-height: 1.65; color: #444; }
+
+.sig-wrap { border: 1px solid var(–rule); border-radius: 2px; background: #fff; overflow: hidden; }
+.sig-toolbar { background: var(–warm); padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(–rule); }
+.sig-label-small { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #888; }
+.sig-clear { font-size: 11px; color: var(–accent); background: none; border: none; cursor: pointer; font-family: ‘DM Sans’, sans-serif; letter-spacing: 0.5px; font-weight: 500; padding: 0; }
+.sig-clear:hover { text-decoration: underline; }
+canvas#sigCanvas { display: block; width: 100%; height: 160px; touch-action: none; cursor: crosshair; }
+
+.field-error { font-size: 11px; color: var(–error); display: none; margin-top: -3px; }
+.field.invalid input, .field.invalid select, .field.invalid textarea { border-color: var(–error); }
+.field.invalid .field-error { display: block; }
+
+.toast {
+position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
+background: var(–ink); color: var(–cream);
+padding: 12px 24px; border-radius: 4px;
+font-size: 13px; letter-spacing: 0.3px;
+opacity: 0; transition: all 0.3s;
+pointer-events: none; z-index: 999;
+white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.error { background: var(–error); }
+.toast.success { background: var(–success); }
+
+/* ── TWO-MODE ADDITIONS ── */
+–locked: #f0ece4;
+
+.mode-banner {
+display: flex; align-items: center; gap: 10px;
+padding: 10px 40px;
+font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600;
+}
+.mode-banner.contractor { background: #2a4a8c; color: #adc4ff; }
+.mode-banner.customer   { background: #1a4a2a; color: #a0d4b0; }
+.mode-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+.btn-blue { background: #2a4a8c; color: #fff; }
+.btn-blue:hover { background: #3a5aaa; }
+
 .locked-field {
 font-family: ‘DM Sans’, sans-serif;
 font-size: 14px; font-weight: 400;
-background: var(–locked);
+background: #f0ece4;
 border: 1px solid var(–rule);
 border-radius: 2px;
 padding: 10px 14px;
@@ -171,7 +223,6 @@ border-radius: 2px; padding: 2px 7px;
 margin-left: 8px; font-weight: 500;
 }
 
-/* ── GENERATE LINK PANEL ── */
 .generate-panel {
 margin: 40px 0;
 background: #1a2a4a;
@@ -194,7 +245,6 @@ background: #0f1a30;
 border: 1px solid rgba(173,196,255,0.2);
 border-radius: 2px;
 padding: 12px 14px;
-font-family: ‘DM Sans’, monospace;
 font-size: 12px;
 color: #adc4ff;
 word-break: break-all;
@@ -205,67 +255,6 @@ line-height: 1.6;
 .link-output.visible { display: block; }
 .generate-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 
-/* ── UPLOAD ── */
-.upload-zone {
-border: 2px dashed var(–rule);
-border-radius: 4px;
-padding: 32px 24px;
-text-align: center;
-cursor: pointer;
-transition: border-color 0.2s, background 0.2s;
-background: #fff;
-position: relative;
-}
-.upload-zone:hover, .upload-zone.dragover { border-color: var(–accent); background: rgba(139,105,20,0.04); }
-.upload-zone input[type=“file”] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
-.upload-icon { font-size: 28px; margin-bottom: 8px; }
-.upload-text { font-size: 13px; color: #777; }
-.upload-text strong { color: var(–accent); font-weight: 500; }
-.upload-preview { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-.upload-preview img { width: 80px; height: 80px; object-fit: cover; border-radius: 2px; border: 1px solid var(–rule); }
-
-/* ── CHECKBOX ── */
-.checkbox-field {
-background: #fff;
-border: 1px solid var(–rule);
-border-radius: 2px;
-padding: 16px;
-display: flex; gap: 14px; align-items: flex-start;
-cursor: pointer;
-transition: border-color 0.2s;
-}
-.checkbox-field:hover { border-color: var(–accent); }
-.checkbox-field input[type=“checkbox”] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(–accent); margin-top: 2px; cursor: pointer; }
-.checkbox-text { font-size: 13px; line-height: 1.65; color: #444; }
-
-/* ── SIGNATURE ── */
-.sig-wrap { border: 1px solid var(–rule); border-radius: 2px; background: #fff; overflow: hidden; }
-.sig-toolbar { background: var(–warm); padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(–rule); }
-.sig-label-small { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #888; }
-.sig-clear { font-size: 11px; color: var(–accent); background: none; border: none; cursor: pointer; font-family: ‘DM Sans’, sans-serif; letter-spacing: 0.5px; font-weight: 500; padding: 0; }
-.sig-clear:hover { text-decoration: underline; }
-canvas#sigCanvas { display: block; width: 100%; height: 160px; touch-action: none; cursor: crosshair; }
-
-/* ── ERRORS ── */
-.field-error { font-size: 11px; color: var(–error); display: none; margin-top: -3px; }
-.field.invalid input, .field.invalid select, .field.invalid textarea { border-color: var(–error); }
-.field.invalid .field-error { display: block; }
-
-/* ── TOAST ── */
-.toast {
-position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
-background: var(–ink); color: var(–cream);
-padding: 12px 24px; border-radius: 4px;
-font-size: 13px; letter-spacing: 0.3px;
-opacity: 0; transition: all 0.3s;
-pointer-events: none; z-index: 999;
-white-space: nowrap;
-}
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-.toast.error { background: var(–error); }
-.toast.success { background: var(–success); }
-
-/* ── SUCCESS SCREEN ── */
 .success-screen {
 display: none;
 max-width: 780px; margin: 60px auto; padding: 0 24px; text-align: center;
@@ -283,11 +272,11 @@ max-width: 780px; margin: 60px auto; padding: 0 24px; text-align: center;
   <div class="header-inner">
     <div class="brand-rule">
       <div class="brand-dot"></div>
-      <div class="brand-text" id="headerBrandText">Client Approval Document</div>
+      <div class="brand-text">Client Approval Document</div>
       <div class="brand-line"></div>
     </div>
     <h1>Color &amp; Finish<br>Selections Approval</h1>
-    <p class="header-sub" id="headerSub">Complete all required fields and generate a link to send to your customer for review and signature.</p>
+    <p class="header-sub">Please complete all required fields and sign below to confirm your color and finish selections.</p>
   </div>
 </header>
 
@@ -296,7 +285,7 @@ max-width: 780px; margin: 60px auto; padding: 0 24px; text-align: center;
   <span id="modeBannerText">Contractor Mode — Fill in job details, then generate a customer link</span>
 </div>
 
-<div class="action-bar" id="actionBar">
+<div class="action-bar">
   <button class="btn btn-outline" id="btnExportPDF" onclick="exportPDF()" style="display:none">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
     Download PDF
@@ -311,7 +300,7 @@ max-width: 780px; margin: 60px auto; padding: 0 24px; text-align: center;
   <form id="mainForm" novalidate>
 
 ```
-<!-- SECTION 1 — Project Info -->
+<!-- SECTION 1 -->
 <div class="section">
   <div class="section-header">
     <span class="section-icon">🧾</span>
@@ -336,7 +325,7 @@ max-width: 780px; margin: 60px auto; padding: 0 24px; text-align: center;
   </div>
 </div>
 
-<!-- SECTION 2 — Finish Selections -->
+<!-- SECTION 2 -->
 <div class="section">
   <div class="section-header">
     <span class="section-icon">🎨</span>
@@ -385,7 +374,7 @@ max-width: 780px; margin: 60px auto; padding: 0 24px; text-align: center;
   </div>
 </div>
 
-<!-- SECTION 3 — Material Details -->
+<!-- SECTION 3 -->
 <div class="section">
   <div class="section-header">
     <span class="section-icon">🪵</span>
@@ -412,7 +401,7 @@ max-width: 780px; margin: 60px auto; padding: 0 24px; text-align: center;
   </div>
 </div>
 
-<!-- SECTION 4 — Sample Verification -->
+<!-- SECTION 4 -->
 <div class="section">
   <div class="section-header">
     <span class="section-icon">📸</span>
@@ -442,10 +431,8 @@ max-width: 780px; margin: 60px auto; padding: 0 24px; text-align: center;
       </select>
       <span class="field-error">Please select viewing conditions.</span>
     </div>
-
-    <!-- Photo upload: visible in both modes but required only in customer mode -->
     <div class="field" id="f-photoUpload">
-      <label class="field-label" id="photoLabel">Photo of Approved Sample / Finish <span style="color:#aaa;font-size:10px;letter-spacing:0">(Optional in contractor mode)</span></label>
+      <label class="field-label"><span class="req">*</span> Photo of Approved Sample / Finish</label>
       <div class="upload-zone" id="uploadZone">
         <input type="file" id="photoUpload" accept="image/*" multiple onchange="handleUpload(this)">
         <div class="upload-icon">🖼️</div>
@@ -460,7 +447,7 @@ max-width: 780px; margin: 60px auto; padding: 0 24px; text-align: center;
   </div>
 </div>
 
-<!-- SECTION 5 — Color Approval -->
+<!-- SECTION 5 -->
 <div class="section" id="section-approval">
   <div class="section-header">
     <span class="section-icon">✅</span>
@@ -479,7 +466,7 @@ max-width: 780px; margin: 60px auto; padding: 0 24px; text-align: center;
   </div>
 </div>
 
-<!-- SECTION 6 — Acknowledgment -->
+<!-- SECTION 6 -->
 <div class="section" id="section-ack">
   <div class="section-header">
     <span class="section-icon">📝</span>
@@ -504,7 +491,7 @@ max-width: 780px; margin: 60px auto; padding: 0 24px; text-align: center;
   </div>
 </div>
 
-<!-- SECTION 7 — Signature -->
+<!-- SECTION 7 -->
 <div class="section" id="section-sig">
   <div class="section-header">
     <span class="section-icon">✍️</span>
@@ -538,49 +525,49 @@ max-width: 780px; margin: 60px auto; padding: 0 24px; text-align: center;
 ```
 
   </form>
+</div><!-- /form-body -->
 
-  <!-- GENERATE LINK PANEL (contractor mode only) -->
+<!-- GENERATE LINK PANEL — shown in contractor mode only -->
 
+<div class="form-body" id="generatePanelWrap">
   <div class="generate-panel" id="generatePanel">
     <div class="generate-panel-header">
       <span style="font-size:18px;">🔗</span>
       <span class="generate-panel-title">Generate Customer Link</span>
     </div>
     <div class="generate-panel-body">
-      <p>Once you've filled in the job details above, click the button below. It will create a personalized link that pre-fills the form with the project information you entered. Send it to your customer — they'll review the selections, check the approval boxes, sign, and download their signed PDF.</p>
+      <p>Once you've filled in the job details above, click Generate Link. It packages everything into a URL you can text or email to your customer. They'll open it, see all selections pre-filled, check the approval boxes, sign, and download their signed PDF.</p>
       <div class="link-output" id="linkOutput"></div>
       <div class="generate-actions">
         <button class="btn btn-blue" onclick="generateLink()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
           Generate Link
         </button>
         <button class="btn btn-gold" id="copyBtn" onclick="copyLink()" style="display:none">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
           Copy Link
         </button>
       </div>
     </div>
   </div>
+</div>
 
-</div><!-- /form-body -->
-
-<!-- SUCCESS SCREEN -->
+<!-- SUCCESS SCREEN — shown after customer submits -->
 
 <div class="success-screen" id="successScreen">
   <div class="success-icon">✅</div>
   <h2>Approval Submitted</h2>
-  <p>Thank you — your color and finish selections have been approved and your signed PDF has been downloaded. Please keep a copy for your records.</p>
+  <p>Your color and finish selections have been approved and your signed PDF has been downloaded. Please keep a copy for your records.</p>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 // MODE DETECTION
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 const urlParams = new URLSearchParams(window.location.search);
 const isCustomerMode = urlParams.has('d');
-let customerRequiresPhoto = false; // set true in customer mode
 
 function initMode() {
   if (isCustomerMode) {
@@ -591,76 +578,55 @@ function initMode() {
 }
 
 function enterContractorMode() {
-  // Show contractor UI
   document.getElementById('modeBanner').className = 'mode-banner contractor';
   document.getElementById('modeBannerText').textContent = 'Contractor Mode — Fill in job details, then generate a customer link';
-  document.getElementById('headerSub').textContent = 'Fill in the project information below, then generate a secure link to send to your customer for review and signature.';
-
-  // Show generate panel, hide submit/pdf buttons
-  document.getElementById('generatePanel').style.display = '';
+  // Hide customer-only buttons
   document.getElementById('btnSubmit').style.display = 'none';
   document.getElementById('btnExportPDF').style.display = 'none';
-
-  // Hide approval/sig sections in contractor mode (customer fills those)
+  // Hide approval/sig sections — customer fills those
   document.getElementById('section-approval').style.display = 'none';
   document.getElementById('section-ack').style.display = 'none';
   document.getElementById('section-sig').style.display = 'none';
-
-  // Photo is optional for contractor
-  document.getElementById('photoLabel').innerHTML = 'Photo of Approved Sample / Finish <span style="color:#aaa;font-size:10px;letter-spacing:0">(Optional — customer can also upload)</span>';
+  // Show generate panel
+  document.getElementById('generatePanelWrap').style.display = '';
+  document.getElementById('successScreen').style.display = 'none';
 }
 
 function enterCustomerMode() {
-  // Banner
   document.getElementById('modeBanner').className = 'mode-banner customer';
-  document.getElementById('modeBannerText').textContent = 'Customer Review — Please review your selections, then sign and submit';
-  document.getElementById('headerSub').textContent = 'Your contractor has pre-filled the project details below. Please review everything carefully, then scroll down to sign and approve.';
-
-  // Hide generate panel
-  document.getElementById('generatePanel').style.display = 'none';
-
-  // Show action buttons
+  document.getElementById('modeBannerText').textContent = 'Customer Review — Please review your selections, then sign and submit below';
+  // Show customer action buttons
   document.getElementById('btnSubmit').style.display = '';
+  document.getElementById('btnExportPDF').style.display = '';
+  // Hide generate panel
+  document.getElementById('generatePanelWrap').style.display = 'none';
 
-  // Photo required for customer
-  customerRequiresPhoto = true;
-  document.getElementById('photoLabel').innerHTML = '<span class="req">*</span> Photo of Approved Sample / Finish';
-
-  // Load data from URL
+  // Load pre-filled data from URL
   try {
-    const raw = urlParams.get('d');
-    const data = JSON.parse(atob(raw));
-    populateFromData(data);
-    lockContractorFields();
+    const data = JSON.parse(atob(urlParams.get('d')));
+    populateAndLock(data);
   } catch(e) {
-    showToast('Could not load form data. Please contact your contractor.', 'error');
+    showToast('Could not load form data — please contact your contractor.', 'error');
   }
 }
 
-function populateFromData(data) {
-  const fields = ['customerName','projectAddress','projectDesc','finishType','paintColors','stainColors','finishSheen','surfaces','surfaceMaterial','conditionNotes','sampleType','viewingConditions'];
-  fields.forEach(id => {
-    const el = document.getElementById(id);
-    if (!el || !data[id]) return;
-    el.value = data[id];
-  });
-}
+function populateAndLock(data) {
+  const editable = ['customerName','projectAddress','projectDesc','finishType','paintColors',
+    'stainColors','finishSheen','surfaces','surfaceMaterial','conditionNotes','sampleType','viewingConditions'];
 
-function lockContractorFields() {
-  const toLock = ['customerName','projectAddress','projectDesc','finishType','paintColors','stainColors','finishSheen','surfaces','surfaceMaterial','conditionNotes','sampleType','viewingConditions'];
-  toLock.forEach(id => {
+  editable.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
-    const val = el.value || '—';
+    if (data[id]) el.value = data[id];
+    // Replace with locked display
     const locked = document.createElement('div');
     locked.className = 'locked-field';
-    locked.textContent = val === '—' ? '—' : val;
+    locked.textContent = data[id] || '—';
     el.replaceWith(locked);
   });
 
-  // Mark field labels with locked badge
-  const fieldLabels = document.querySelectorAll('.section:not(#section-approval):not(#section-ack):not(#section-sig) .field-label');
-  fieldLabels.forEach(label => {
+  // Add "Pre-filled" badges to labels in the top 4 sections
+  document.querySelectorAll('#mainFormBody .section:not(#section-approval):not(#section-ack):not(#section-sig) .field-label').forEach(label => {
     const badge = document.createElement('span');
     badge.className = 'locked-badge';
     badge.textContent = 'Pre-filled';
@@ -668,23 +634,23 @@ function lockContractorFields() {
   });
 }
 
-// ═══════════════════════════════════════════════════
-// GENERATE LINK (contractor)
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════
+// GENERATE LINK (contractor mode)
+// ══════════════════════════════════════════════
 function generateLink() {
   const data = {
-    customerName: document.getElementById('customerName').value.trim(),
-    projectAddress: document.getElementById('projectAddress').value.trim(),
-    projectDesc: document.getElementById('projectDesc').value.trim(),
-    finishType: document.getElementById('finishType').value,
-    paintColors: document.getElementById('paintColors').value.trim(),
-    stainColors: document.getElementById('stainColors').value.trim(),
-    finishSheen: document.getElementById('finishSheen').value,
-    surfaces: document.getElementById('surfaces').value.trim(),
-    surfaceMaterial: document.getElementById('surfaceMaterial').value,
-    conditionNotes: document.getElementById('conditionNotes').value.trim(),
-    sampleType: document.getElementById('sampleType').value,
-    viewingConditions: document.getElementById('viewingConditions').value,
+    customerName:     document.getElementById('customerName').value.trim(),
+    projectAddress:   document.getElementById('projectAddress').value.trim(),
+    projectDesc:      document.getElementById('projectDesc').value.trim(),
+    finishType:       document.getElementById('finishType').value,
+    paintColors:      document.getElementById('paintColors').value.trim(),
+    stainColors:      document.getElementById('stainColors').value.trim(),
+    finishSheen:      document.getElementById('finishSheen').value,
+    surfaces:         document.getElementById('surfaces').value.trim(),
+    surfaceMaterial:  document.getElementById('surfaceMaterial').value,
+    conditionNotes:   document.getElementById('conditionNotes').value.trim(),
+    sampleType:       document.getElementById('sampleType').value,
+    viewingConditions:document.getElementById('viewingConditions').value,
   };
 
   if (!data.customerName || !data.projectAddress || !data.finishType || !data.surfaces) {
@@ -694,15 +660,13 @@ function generateLink() {
 
   const encoded = btoa(JSON.stringify(data));
   const url = window.location.origin + window.location.pathname + '?d=' + encoded;
+  window._generatedLink = url;
 
-  const linkOutput = document.getElementById('linkOutput');
-  linkOutput.textContent = url;
-  linkOutput.classList.add('visible');
+  const out = document.getElementById('linkOutput');
+  out.textContent = url;
+  out.classList.add('visible');
   document.getElementById('copyBtn').style.display = '';
   showToast('Link generated!', 'success');
-
-  // Store for copy
-  window._generatedLink = url;
 }
 
 function copyLink() {
@@ -710,20 +674,14 @@ function copyLink() {
   navigator.clipboard.writeText(window._generatedLink)
     .then(() => showToast('Link copied to clipboard!', 'success'))
     .catch(() => {
-      // fallback
       const ta = document.createElement('textarea');
       ta.value = window._generatedLink;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
       showToast('Link copied!', 'success');
     });
 }
 
-// ═══════════════════════════════════════════════════
-// SIGNATURE CANVAS
-// ═══════════════════════════════════════════════════
+// ── Signature Canvas ──────────────────────────────────
 const canvas = document.getElementById('sigCanvas');
 const ctx = canvas.getContext('2d');
 let drawing = false, hasSig = false;
@@ -768,9 +726,7 @@ function clearSig() {
   hasSig = false;
 }
 
-// ═══════════════════════════════════════════════════
-// FILE UPLOAD
-// ═══════════════════════════════════════════════════
+// ── Upload ────────────────────────────────────────────
 const uploadedFiles = [];
 const uploadedDataURLs = [];
 
@@ -794,9 +750,7 @@ zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add(
 zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
 zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('dragover'); handleUpload({ files: e.dataTransfer.files }); });
 
-// ═══════════════════════════════════════════════════
-// TOAST
-// ═══════════════════════════════════════════════════
+// ── Toast ─────────────────────────────────────────────
 function showToast(msg, type = '') {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -804,11 +758,39 @@ function showToast(msg, type = '') {
   setTimeout(() => t.className = 'toast', 3200);
 }
 
-// ═══════════════════════════════════════════════════
-// VALIDATION (customer mode only)
-// ═══════════════════════════════════════════════════
+// ── Validation ────────────────────────────────────────
 function validate() {
   let ok = true;
+
+  // In customer mode, top fields are locked — only validate signature fields
+  if (isCustomerMode) {
+    ['printedName','signDate'].forEach(id => {
+      const el = document.getElementById(id);
+      const f = document.getElementById('f-' + id);
+      if (!el.value.trim()) { f.classList.add('invalid'); ok = false; }
+      else f.classList.remove('invalid');
+    });
+  } else {
+    // Contractor mode: validate all editable fields
+    const textRequired = [
+      ['customerName','f-customerName'],
+      ['projectAddress','f-projectAddress'],
+      ['surfaces','f-surfaces'],
+      ['printedName','f-printedName'],
+      ['signDate','f-signDate'],
+    ];
+    const selectRequired = [
+      ['finishType','f-finishType'],
+      ['sampleType','f-sampleType'],
+      ['viewingConditions','f-viewingConditions'],
+    ];
+    [...textRequired, ...selectRequired].forEach(([id, fid]) => {
+      const el = document.getElementById(id);
+      const f = document.getElementById(fid);
+      if (el && !el.value.trim()) { f.classList.add('invalid'); ok = false; }
+      else if (f) f.classList.remove('invalid');
+    });
+  }
 
   ['colorApproval','acknowledgment'].forEach(id => {
     const el = document.getElementById(id);
@@ -817,14 +799,7 @@ function validate() {
     else f.classList.remove('invalid');
   });
 
-  ['printedName','signDate'].forEach(id => {
-    const el = document.getElementById(id);
-    const f = document.getElementById('f-' + id);
-    if (!el.value.trim()) { f.classList.add('invalid'); ok = false; }
-    else f.classList.remove('invalid');
-  });
-
-  if (customerRequiresPhoto && uploadedFiles.length === 0) {
+  if (isCustomerMode && uploadedFiles.length === 0) {
     document.getElementById('f-photoUpload').classList.add('invalid');
     document.getElementById('photoError').style.display = 'block';
     ok = false;
@@ -842,55 +817,46 @@ function validate() {
   return ok;
 }
 
-// ═══════════════════════════════════════════════════
-// SUBMIT
-// ═══════════════════════════════════════════════════
 function submitForm() {
-  if (!validate()) {
+  if (validate()) {
+    exportPDF(true);
+  } else {
     showToast('Please complete all required fields', 'error');
     const first = document.querySelector('.field.invalid');
     if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    return;
   }
-  exportPDF(true);
 }
 
-// ═══════════════════════════════════════════════════
-// COLLECT DATA
-// ═══════════════════════════════════════════════════
+// ── Collect Data ──────────────────────────────────────
 function collectData() {
-  const get = id => {
+  const getVal = (id) => {
     const el = document.getElementById(id);
-    if (!el) {
-      // locked field
-      const locked = document.querySelector(`#f-${id} .locked-field`);
-      return locked ? locked.textContent : '';
-    }
-    return el.value || el.textContent || '';
+    if (el) return el.value || '';
+    // May be replaced by a locked-field div
+    const locked = document.querySelector(`#f-${id} .locked-field`);
+    return locked ? locked.textContent : '';
   };
   return {
-    customerName: get('customerName'),
-    projectAddress: get('projectAddress'),
-    projectDesc: get('projectDesc'),
-    finishType: get('finishType'),
-    paintColors: get('paintColors'),
-    stainColors: get('stainColors'),
-    finishSheen: get('finishSheen'),
-    surfaces: get('surfaces'),
-    surfaceMaterial: get('surfaceMaterial'),
-    conditionNotes: get('conditionNotes'),
-    sampleType: get('sampleType'),
-    viewingConditions: get('viewingConditions'),
-    colorApproval: document.getElementById('colorApproval') ? document.getElementById('colorApproval').checked : false,
-    acknowledgment: document.getElementById('acknowledgment') ? document.getElementById('acknowledgment').checked : false,
-    printedName: document.getElementById('printedName') ? document.getElementById('printedName').value : '',
-    signDate: document.getElementById('signDate') ? document.getElementById('signDate').value : '',
+    customerName:      getVal('customerName'),
+    projectAddress:    getVal('projectAddress'),
+    projectDesc:       getVal('projectDesc'),
+    finishType:        getVal('finishType'),
+    paintColors:       getVal('paintColors'),
+    stainColors:       getVal('stainColors'),
+    finishSheen:       getVal('finishSheen'),
+    surfaces:          getVal('surfaces'),
+    surfaceMaterial:   getVal('surfaceMaterial'),
+    conditionNotes:    getVal('conditionNotes'),
+    sampleType:        getVal('sampleType'),
+    viewingConditions: getVal('viewingConditions'),
+    colorApproval:     document.getElementById('colorApproval').checked,
+    acknowledgment:    document.getElementById('acknowledgment').checked,
+    printedName:       getVal('printedName'),
+    signDate:          getVal('signDate'),
   };
 }
 
-// ═══════════════════════════════════════════════════
-// PDF EXPORT
-// ═══════════════════════════════════════════════════
+// ── PDF Export ────────────────────────────────────────
 async function exportPDF(afterSubmit = false) {
   const { jsPDF } = window.jspdf;
   const d = collectData();
@@ -899,7 +865,6 @@ async function exportPDF(afterSubmit = false) {
   const mg = 54;
   let y = 0;
 
-  // Header
   doc.setFillColor(26, 26, 24);
   doc.rect(0, 0, W, 75, 'F');
   doc.setTextColor(245, 240, 232);
@@ -1000,7 +965,6 @@ async function exportPDF(afterSubmit = false) {
   drawRow('Printed Name', d.printedName);
   drawRow('Date', d.signDate);
 
-  // Photos page
   if (uploadedDataURLs.length > 0) {
     doc.addPage();
     y = mg;
@@ -1015,20 +979,390 @@ async function exportPDF(afterSubmit = false) {
 
   const filename = `Color-Finish-Approval_${(d.customerName || 'Form').replace(/\s+/g,'-')}_${d.signDate || 'Unsigned'}.pdf`;
   doc.save(filename);
-  showToast('Signed PDF downloaded', 'success');
+  showToast('PDF downloaded', 'success');
 
   if (afterSubmit) {
     document.getElementById('mainFormBody').style.display = 'none';
+    document.getElementById('generatePanelWrap').style.display = 'none';
     document.getElementById('modeBanner').style.display = 'none';
-    document.getElementById('successScreen').classList.add('visible');
+    document.getElementById('successScreen').style.display = 'block';
   }
 }
 
-// ═══════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════
+// Auto-set today's date
 document.getElementById('signDate').value = new Date().toISOString().split('T')[0];
+
+// Init
 initMode();
+</script>
+
+</body>
+</html>
+const ctx = canvas.getContext('2d');
+let drawing = false, hasSig = false;
+
+function resizeCanvas() {
+const rect = canvas.parentElement.getBoundingClientRect();
+const dpr = window.devicePixelRatio || 1;
+const imgData = hasSig ? canvas.toDataURL() : null;
+const prevW = canvas.width / dpr, prevH = canvas.height / dpr;
+canvas.width = rect.width * dpr;
+canvas.height = 160 * dpr;
+ctx.scale(dpr, dpr);
+ctx.strokeStyle = ‘#1a1a18’;
+ctx.lineWidth = 2;
+ctx.lineCap = ‘round’;
+ctx.lineJoin = ‘round’;
+if (imgData) {
+const img = new Image();
+img.onload = () => ctx.drawImage(img, 0, 0, rect.width, 160);
+img.src = imgData;
+}
+}
+resizeCanvas();
+window.addEventListener(‘resize’, () => setTimeout(resizeCanvas, 50));
+
+function getPos(e) {
+const r = canvas.getBoundingClientRect();
+if (e.touches) return { x: e.touches[0].clientX - r.left, y: e.touches[0].clientY - r.top };
+return { x: e.clientX - r.left, y: e.clientY - r.top };
+}
+
+canvas.addEventListener(‘mousedown’, e => { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); });
+canvas.addEventListener(‘mousemove’, e => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); hasSig = true; });
+canvas.addEventListener(‘mouseup’, () => drawing = false);
+canvas.addEventListener(‘mouseleave’, () => drawing = false);
+canvas.addEventListener(‘touchstart’, e => { e.preventDefault(); drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); }, { passive: false });
+canvas.addEventListener(‘touchmove’, e => { e.preventDefault(); if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); hasSig = true; }, { passive: false });
+canvas.addEventListener(‘touchend’, () => drawing = false);
+
+function clearSig() {
+const r = canvas.getBoundingClientRect();
+ctx.clearRect(0, 0, r.width, 200);
+hasSig = false;
+}
+
+// ── Upload ────────────────────────────────────────────
+const uploadedFiles = [];
+const uploadedDataURLs = [];
+
+function handleUpload(input) {
+const preview = document.getElementById(‘uploadPreview’);
+Array.from(input.files).forEach(file => {
+uploadedFiles.push(file);
+const r = new FileReader();
+r.onload = e => {
+uploadedDataURLs.push(e.target.result);
+const img = document.createElement(‘img’);
+img.src = e.target.result;
+preview.appendChild(img);
+};
+r.readAsDataURL(file);
+});
+}
+
+const zone = document.getElementById(‘uploadZone’);
+zone.addEventListener(‘dragover’, e => { e.preventDefault(); zone.classList.add(‘dragover’); });
+zone.addEventListener(‘dragleave’, () => zone.classList.remove(‘dragover’));
+zone.addEventListener(‘drop’, e => { e.preventDefault(); zone.classList.remove(‘dragover’); handleUpload({ files: e.dataTransfer.files }); });
+
+// ── Toast ─────────────────────────────────────────────
+function showToast(msg, type = ‘’) {
+const t = document.getElementById(‘toast’);
+t.textContent = msg;
+t.className = ‘toast ’ + type + ’ show’;
+setTimeout(() => t.className = ‘toast’, 3200);
+}
+
+// ── Validation ────────────────────────────────────────
+function validate() {
+let ok = true;
+const textRequired = [
+[‘customerName’,‘f-customerName’],
+[‘projectAddress’,‘f-projectAddress’],
+[‘surfaces’,‘f-surfaces’],
+[‘printedName’,‘f-printedName’],
+[‘signDate’,‘f-signDate’],
+];
+const selectRequired = [
+[‘finishType’,‘f-finishType’],
+[‘sampleType’,‘f-sampleType’],
+[‘viewingConditions’,‘f-viewingConditions’],
+];
+
+[…textRequired, …selectRequired].forEach(([id, fid]) => {
+const el = document.getElementById(id);
+const f = document.getElementById(fid);
+if (!el.value.trim()) { f.classList.add(‘invalid’); ok = false; }
+else f.classList.remove(‘invalid’);
+});
+
+[‘colorApproval’,‘acknowledgment’].forEach(id => {
+const el = document.getElementById(id);
+const f = document.getElementById(‘f-’ + id);
+if (!el.checked) { f.classList.add(‘invalid’); ok = false; }
+else f.classList.remove(‘invalid’);
+});
+
+const fPhoto = document.getElementById(‘f-photoUpload’);
+const photoErr = document.getElementById(‘photoError’);
+if (uploadedFiles.length === 0) {
+fPhoto.classList.add(‘invalid’); photoErr.style.display = ‘block’; ok = false;
+} else { fPhoto.classList.remove(‘invalid’); photoErr.style.display = ‘none’; }
+
+const fSig = document.getElementById(‘f-signature’);
+const sigErr = document.getElementById(‘sigError’);
+if (!hasSig) {
+fSig.classList.add(‘invalid’); sigErr.style.display = ‘block’; ok = false;
+} else { fSig.classList.remove(‘invalid’); sigErr.style.display = ‘none’; }
+
+return ok;
+}
+
+function submitForm() {
+if (validate()) {
+showToast(‘✓ Form submitted successfully’, ‘success’);
+} else {
+showToast(‘Please complete all required fields’, ‘error’);
+const first = document.querySelector(’.field.invalid’);
+if (first) first.scrollIntoView({ behavior: ‘smooth’, block: ‘center’ });
+}
+}
+
+// ── Collect Data ──────────────────────────────────────
+function collectData() {
+return {
+customerName: document.getElementById(‘customerName’).value,
+projectAddress: document.getElementById(‘projectAddress’).value,
+projectDesc: document.getElementById(‘projectDesc’).value,
+finishType: document.getElementById(‘finishType’).value,
+paintColors: document.getElementById(‘paintColors’).value,
+stainColors: document.getElementById(‘stainColors’).value,
+finishSheen: document.getElementById(‘finishSheen’).value,
+surfaces: document.getElementById(‘surfaces’).value,
+surfaceMaterial: document.getElementById(‘surfaceMaterial’).value,
+conditionNotes: document.getElementById(‘conditionNotes’).value,
+sampleType: document.getElementById(‘sampleType’).value,
+viewingConditions: document.getElementById(‘viewingConditions’).value,
+colorApproval: document.getElementById(‘colorApproval’).checked,
+acknowledgment: document.getElementById(‘acknowledgment’).checked,
+printedName: document.getElementById(‘printedName’).value,
+signDate: document.getElementById(‘signDate’).value,
+};
+}
+
+// ── PDF Export ────────────────────────────────────────
+async function exportPDF() {
+const { jsPDF } = window.jspdf;
+const d = collectData();
+const doc = new jsPDF({ unit: ‘pt’, format: ‘letter’ });
+const W = doc.internal.pageSize.getWidth();
+const mg = 54;
+let y = 0;
+
+// Header
+doc.setFillColor(26, 26, 24);
+doc.rect(0, 0, W, 75, ‘F’);
+doc.setTextColor(245, 240, 232);
+doc.setFont(‘helvetica’, ‘bold’);
+doc.setFontSize(20);
+doc.text(‘Color & Finish Selections Approval’, mg, 42);
+doc.setFont(‘helvetica’, ‘normal’);
+doc.setFontSize(9);
+doc.setTextColor(180, 165, 140);
+doc.text(‘Client Approval Document’, mg, 60);
+y = 100;
+
+const newPageIfNeeded = (h = 40) => {
+if (y + h > 730) { doc.addPage(); y = mg; }
+};
+
+const drawSection = (title) => {
+newPageIfNeeded(30);
+doc.setFillColor(26, 26, 24);
+doc.rect(mg - 8, y - 13, W - (mg - 8) * 2, 24, ‘F’);
+doc.setFont(‘helvetica’, ‘bold’);
+doc.setFontSize(10);
+doc.setTextColor(245, 240, 232);
+doc.text(title, mg, y + 4);
+y += 26;
+doc.setTextColor(26, 26, 24);
+};
+
+const drawRow = (label, value) => {
+const safeVal = (value || ‘—’).toString();
+const lines = doc.splitTextToSize(safeVal, W - mg * 2 - 10);
+const rowH = Math.max(lines.length * 15 + 18, 34);
+newPageIfNeeded(rowH);
+// Alt row bg
+doc.setFillColor(250, 247, 242);
+doc.rect(mg - 8, y - 4, W - (mg - 8) * 2, rowH, ‘F’);
+doc.setDrawColor(200, 191, 170);
+doc.rect(mg - 8, y - 4, W - (mg - 8) * 2, rowH, ‘S’);
+doc.setFont(‘helvetica’, ‘bold’);
+doc.setFontSize(8);
+doc.setTextColor(139, 105, 20);
+doc.text(label.toUpperCase(), mg, y + 7);
+doc.setFont(‘helvetica’, ‘normal’);
+doc.setFontSize(10);
+doc.setTextColor(40, 40, 40);
+doc.text(lines, mg, y + 20);
+y += rowH + 4;
+};
+
+drawSection(‘1 — Project Information’);
+y += 4;
+drawRow(‘Customer Name’, d.customerName);
+drawRow(‘Project Address’, d.projectAddress);
+if (d.projectDesc) drawRow(‘Project Description’, d.projectDesc);
+y += 8;
+
+drawSection(‘2 — Interior Finish Selections’);
+y += 4;
+drawRow(‘Finish Type’, d.finishType);
+if (d.paintColors) drawRow(‘Paint Color(s)’, d.paintColors);
+if (d.stainColors) drawRow(‘Stain Color(s)’, d.stainColors);
+if (d.finishSheen) drawRow(‘Finish Sheen’, d.finishSheen);
+drawRow(‘Areas / Surfaces Being Finished’, d.surfaces);
+y += 8;
+
+drawSection(‘3 — Material & Surface Details’);
+y += 4;
+drawRow(‘Surface Material’, d.surfaceMaterial || ‘Not specified’);
+if (d.conditionNotes) drawRow(‘Existing Condition Notes’, d.conditionNotes);
+y += 8;
+
+drawSection(‘4 — Sample Verification’);
+y += 4;
+drawRow(‘Sample Type’, d.sampleType);
+drawRow(‘Viewing Conditions’, d.viewingConditions);
+drawRow(‘Photos Attached’, uploadedFiles.length > 0 ? uploadedFiles.length + ’ photo(s) — see last page’ : ‘None’);
+y += 8;
+
+drawSection(‘5 & 6 — Approvals & Acknowledgment’);
+y += 4;
+drawRow(‘Color Approval’, d.colorApproval ? ‘☑ Confirmed’ : ‘☐ Not confirmed’);
+drawRow(‘Acknowledgment & Agreement’, d.acknowledgment ? ‘☑ Agreed to all terms’ : ‘☐ Not confirmed’);
+y += 8;
+
+drawSection(‘7 — Signature’);
+y += 8;
+
+if (hasSig) {
+newPageIfNeeded(80);
+const sigData = canvas.toDataURL(‘image/png’);
+doc.addImage(sigData, ‘PNG’, mg, y, 220, 65);
+y += 70;
+doc.setDrawColor(180, 165, 140);
+doc.setLineWidth(0.5);
+doc.line(mg, y, mg + 220, y);
+y += 6;
+}
+
+drawRow(‘Printed Name’, d.printedName);
+drawRow(‘Date’, d.signDate);
+
+// Photos page
+if (uploadedDataURLs.length > 0) {
+doc.addPage();
+y = mg;
+drawSection(‘Attached Photos’);
+y += 12;
+for (const src of uploadedDataURLs) {
+newPageIfNeeded(160);
+doc.addImage(src, ‘JPEG’, mg, y, 210, 158);
+y += 168;
+}
+}
+
+const filename = `Color-Finish-Approval_${(d.customerName || 'Form').replace(/\s+/g,'-')}_${d.signDate || 'Unsigned'}.pdf`;
+doc.save(filename);
+showToast(‘PDF downloaded’, ‘success’);
+}
+
+// ── DOCX Export ───────────────────────────────────────
+function exportDOCX() {
+const d = collectData();
+
+const esc = s => (s || ‘’).replace(/&/g,’&’).replace(/</g,’<’).replace(/>/g,’>’).replace(/”/g,’"’);
+
+const row = (label, value) => `<w:tr> <w:tc><w:tcPr><w:tcW w:w="2300" w:type="dxa"/><w:shd w:val="clear" w:fill="F5F0E8"/></w:tcPr> <w:p><w:pPr><w:spacing w:before="60" w:after="60"/></w:pPr> <w:r><w:rPr><w:b/><w:color w:val="8B6914"/><w:sz w:val="17"/></w:rPr><w:t>${esc(label)}</w:t></w:r></w:p></w:tc> <w:tc><w:tcPr><w:tcW w:w="5300" w:type="dxa"/></w:tcPr> <w:p><w:pPr><w:spacing w:before="60" w:after="60"/></w:pPr> <w:r><w:rPr><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">${esc(value || '—')}</w:t></w:r></w:p></w:tc> </w:tr>`;
+
+const tbl = (rows) => `<w:tbl> <w:tblPr><w:tblW w:w="7600" w:type="dxa"/> <w:tblBorders> <w:top w:val="single" w:sz="4" w:color="C8BFAA"/> <w:left w:val="single" w:sz="4" w:color="C8BFAA"/> <w:bottom w:val="single" w:sz="4" w:color="C8BFAA"/> <w:right w:val="single" w:sz="4" w:color="C8BFAA"/> <w:insideH w:val="single" w:sz="4" w:color="C8BFAA"/> <w:insideV w:val="single" w:sz="4" w:color="C8BFAA"/> </w:tblBorders> </w:tblPr>${rows}</w:tbl>`;
+
+const sectionHead = (title) => `<w:p> <w:pPr><w:spacing w:before="280" w:after="80"/><w:shd w:val="clear" w:fill="1a1a18"/> <w:pBdr><w:bottom w:val="single" w:sz="6" w:color="8B6914"/></w:pBdr></w:pPr> <w:r><w:rPr><w:b/><w:color w:val="F5F0E8"/><w:sz w:val="24"/><w:highlight w:val="none"/></w:rPr><w:t>${esc(title)}</w:t></w:r> </w:p>`;
+
+const gap = `<w:p><w:pPr><w:spacing w:before="80" w:after="80"/></w:pPr></w:p>`;
+
+const body = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w=“http://schemas.openxmlformats.org/wordprocessingml/2006/main”>
+<w:body>
+<w:p><w:pPr><w:jc w:val=“center”/><w:spacing w:before=“0” w:after=“80”/></w:pPr>
+<w:r><w:rPr><w:b/><w:sz w:val=“40”/><w:color w:val=“1a1a18”/></w:rPr><w:t>Color & Finish Selections Approval</w:t></w:r></w:p>
+<w:p><w:pPr><w:jc w:val=“center”/><w:spacing w:before=“0” w:after=“240”/></w:pPr>
+<w:r><w:rPr><w:sz w:val=“18”/><w:color w:val=“888888”/></w:rPr><w:t>Client Approval Document</w:t></w:r></w:p>
+
+${sectionHead(‘1 — Project Information’)}
+${tbl(row(‘Customer Name’, d.customerName) + row(‘Project Address’, d.projectAddress) + (d.projectDesc ? row(‘Project Description’, d.projectDesc) : ‘’))}
+${gap}
+
+${sectionHead(‘2 — Interior Finish Selections’)}
+${tbl(row(‘Finish Type’, d.finishType) + row(‘Paint Color(s)’, d.paintColors) + row(‘Stain Color(s)’, d.stainColors) + row(‘Finish Sheen’, d.finishSheen) + row(‘Areas / Surfaces’, d.surfaces))}
+${gap}
+
+${sectionHead(‘3 — Material & Surface Details’)}
+${tbl(row(‘Surface Material’, d.surfaceMaterial) + row(‘Condition Notes’, d.conditionNotes))}
+${gap}
+
+${sectionHead(‘4 — Sample Verification’)}
+${tbl(row(‘Sample Type’, d.sampleType) + row(‘Viewing Conditions’, d.viewingConditions) + row(‘Photos Attached’, uploadedFiles.length > 0 ? uploadedFiles.length + ’ photo(s) uploaded’ : ‘None’))}
+${gap}
+
+${sectionHead(‘5 & 6 — Approvals & Acknowledgment’)}
+${tbl(row(‘Color Approval’, d.colorApproval ? ‘☑ Confirmed’ : ‘☐ Not confirmed’) + row(‘Acknowledgment & Agreement’, d.acknowledgment ? ‘☑ Agreed to all terms’ : ‘☐ Not confirmed’))}
+${gap}
+
+${sectionHead(‘7 — Signature’)}
+${tbl(row(‘Customer Signature’, hasSig ? ‘[Drawn signature captured — see PDF for embedded image]’ : ‘Not signed’) + row(‘Printed Name’, d.printedName) + row(‘Date’, d.signDate))}
+
+<w:sectPr><w:pgMar w:top=“720” w:right=“720” w:bottom=“720” w:left=“720”/></w:sectPr>
+</w:body>
+</w:document>`;
+
+const rels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?> <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"> <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/> </Relationships>`;
+
+const wordRels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?> <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"></Relationships>`;
+
+const ct = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?> <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"> <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/> <Default Extension="xml" ContentType="application/xml"/> <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/> </Types>`;
+
+const loadZip = () => new Promise((resolve) => {
+if (window.JSZip) return resolve();
+const s = document.createElement(‘script’);
+s.src = ‘https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js’;
+s.onload = resolve;
+document.head.appendChild(s);
+});
+
+loadZip().then(() => {
+const zip = new JSZip();
+zip.file(’[Content_Types].xml’, ct);
+zip.file(’_rels/.rels’, rels);
+zip.file(‘word/document.xml’, body);
+zip.file(‘word/_rels/document.xml.rels’, wordRels);
+zip.generateAsync({ type: ‘blob’, mimeType: ‘application/vnd.openxmlformats-officedocument.wordprocessingml.document’ }).then(blob => {
+const url = URL.createObjectURL(blob);
+const a = document.createElement(‘a’);
+a.href = url;
+a.download = `Color-Finish-Approval_${(d.customerName || 'Form').replace(/\s+/g,'-')}_${d.signDate || 'Unsigned'}.docx`;
+a.click();
+URL.revokeObjectURL(url);
+showToast(‘Word document downloaded’, ‘success’);
+});
+});
+}
+
+// Auto-set today’s date
+document.getElementById(‘signDate’).value = new Date().toISOString().split(‘T’)[0];
 </script>
 
 </body>
