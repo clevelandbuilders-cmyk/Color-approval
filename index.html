@@ -26,7 +26,8 @@
 .form-header { background-color: #1a1a18 !important; color: #f5f0e8 !important; }
 .section-header { background-color: #1a1a18 !important; color: #f5f0e8 !important; }
 .action-bar { background-color: #1a1a18 !important; }
-body { background-color: #f5f0e8; }
+.action-bar.hidden { display: none !important; }
+body { background-color: #f5f0e8; color: #1a1a18; }
 
 - { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -587,9 +588,8 @@ function initMode() {
 function enterContractorMode() {
   document.getElementById('modeBanner').className = 'mode-banner contractor';
   document.getElementById('modeBannerText').textContent = 'Contractor Mode — Fill in job details, then generate a customer link';
-  // Hide customer-only buttons
-  document.getElementById('btnSubmit').style.display = 'none';
-  document.getElementById('btnExportPDF').style.display = 'none';
+  // Hide the entire action bar in contractor mode (no buttons needed)
+  document.querySelector('.action-bar').classList.add('hidden');
   // Hide approval/sig sections — customer fills those
   document.getElementById('section-approval').style.display = 'none';
   document.getElementById('section-ack').style.display = 'none';
@@ -602,7 +602,8 @@ function enterContractorMode() {
 function enterCustomerMode() {
   document.getElementById('modeBanner').className = 'mode-banner customer';
   document.getElementById('modeBannerText').textContent = 'Customer Review — Please review your selections, then sign and submit below';
-  // Show customer action buttons
+  // Show action bar with customer buttons
+  document.querySelector('.action-bar').classList.remove('hidden');
   document.getElementById('btnSubmit').style.display = '';
   document.getElementById('btnExportPDF').style.display = '';
   // Hide generate panel
