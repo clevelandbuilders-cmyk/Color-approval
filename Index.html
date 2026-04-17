@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color & Finish Selections Approval</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root {
+    --ink: #1a1a18;
+    --cream: #f5f0e8;
+    --warm: #e8e0d0;
+    --accent: #8b6914;
+    --accent-light: #c9a84c;
+    --rule: #c8bfaa;
+    --error: #8b2000;
+    --success: #2d5a27;
+    --section-bg: #faf7f2;
+    --locked: #f0ece4;
+  }
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+background: var(–cream);
+color: var(–ink);
+font-family: ‘DM Sans’, sans-serif;
+font-weight: 300;
+min-height: 100vh;
+padding: 0 0 80px;
+}
+
+/* ── HEADER ── */
+.form-header {
+background: var(–ink);
+color: var(–cream);
+padding: 48px 40px 40px;
+position: relative;
+overflow: hidden;
+}
+.form-header::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0; right: 0; bottom: 0;
+background: repeating-linear-gradient(-45deg,transparent,transparent 28px,rgba(255,255,255,0.018) 28px,rgba(255,255,255,0.018) 29px);
+}
+.header-inner { position: relative; max-width: 780px; margin: 0 auto; }
+.brand-rule { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+.brand-dot { width: 10px; height: 10px; border-radius: 50%; background: var(–accent-light); flex-shrink: 0; }
+.brand-line { flex: 1; height: 1px; background: rgba(255,255,255,0.2); }
+.brand-text { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(–accent-light); font-weight: 500; }
+h1 { font-family: ‘Playfair Display’, serif; font-size: clamp(26px, 5vw, 40px); font-weight: 700; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 16px; }
+.header-sub { font-size: 13px; letter-spacing: 0.5px; color: rgba(245,240,232,0.55); line-height: 1.6; }
+
+/* ── MODE BANNER ── */
+.mode-banner {
+display: flex; align-items: center; gap: 10px;
+padding: 10px 40px;
+font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600;
+}
+.mode-banner.contractor { background: #2a4a8c; color: #adc4ff; }
+.mode-banner.customer { background: #1a4a2a; color: #a0d4b0; }
+.mode-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+/* ── ACTION BAR ── */
+.action-bar {
+background: var(–ink);
+border-top: 1px solid rgba(255,255,255,0.1);
+padding: 14px 40px;
+display: flex; gap: 12px; justify-content: flex-end;
+position: sticky; top: 0; z-index: 100;
+}
+.btn {
+font-family: ‘DM Sans’, sans-serif;
+font-size: 12px; font-weight: 500;
+letter-spacing: 1.5px; text-transform: uppercase;
+border: none; cursor: pointer;
+padding: 10px 22px; border-radius: 2px;
+transition: all 0.2s;
+display: flex; align-items: center; gap: 8px;
+}
+.btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: var(–cream); }
+.btn-outline:hover { border-color: var(–accent-light); color: var(–accent-light); }
+.btn-gold { background: var(–accent); color: #fff; }
+.btn-gold:hover { background: var(–accent-light); }
+.btn-blue { background: #2a4a8c; color: #fff; }
+.btn-blue:hover { background: #3a5aaa; }
+.btn-submit { background: var(–success); color: #fff; }
+.btn-submit:hover { background: #3a7533; }
+.btn svg { width: 14px; height: 14px; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── BODY ── */
+.form-body { max-width: 780px; margin: 0 auto; padding: 0 24px; }
+
+.section {
+margin-top: 40px;
+border: 1px solid var(–rule);
+border-radius: 4px;
+overflow: hidden;
+background: var(–section-bg);
+animation: fadeUp 0.4s ease both;
+}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.section:nth-child(2) { animation-delay: 0.05s; }
+.section:nth-child(3) { animation-delay: 0.10s; }
+.section:nth-child(4) { animation-delay: 0.15s; }
+.section:nth-child(5) { animation-delay: 0.20s; }
+.section:nth-child(6) { animation-delay: 0.25s; }
+.section:nth-child(7) { animation-delay: 0.30s; }
+
+.section-header { background: var(–ink); color: var(–cream); padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+.section-icon { font-size: 16px; }
+.section-title { font-family: ‘Playfair Display’, serif; font-size: 15px; font-weight: 600; letter-spacing: 0.3px; }
+.section-num { margin-left: auto; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,240,232,0.4); }
+
+.fields { padding: 24px; display: flex; flex-direction: column; gap: 22px; }
+
+.field { display: flex; flex-direction: column; gap: 7px; }
+.field-label { font-size: 12px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(–accent); display: flex; align-items: center; gap: 6px; }
+.req { color: var(–error); font-size: 14px; line-height: 1; }
+.field-hint { font-size: 11px; color: #888; margin-top: -3px; font-style: italic; }
+
+input[type=“text”], input[type=“date”], select, textarea {
+font-family: ‘DM Sans’, sans-serif;
+font-size: 14px; font-weight: 300;
+background: #fff;
+border: 1px solid var(–rule);
+border-radius: 2px;
+padding: 10px 14px;
+color: var(–ink);
+transition: border-color 0.2s, box-shadow 0.2s;
+width: 100%;
+appearance: none; -webkit-appearance: none;
+}
+input[type=“text”]:focus, input[type=“date”]:focus, select:focus, textarea:focus {
+outline: none;
+border-color: var(–accent);
+box-shadow: 0 0 0 3px rgba(139,105,20,0.10);
+}
+select {
+background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%238b6914’ stroke-width=‘1.5’ fill=‘none’ stroke-linecap=‘round’/%3E%3C/svg%3E”);
+background-repeat: no-repeat;
+background-position: right 14px center;
+padding-right: 36px;
+}
+textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+input[type=“date”] { cursor: pointer; }
+
+/* ── LOCKED (read-only) fields in customer mode ── */
+.locked-field {
+font-family: ‘DM Sans’, sans-serif;
+font-size: 14px; font-weight: 400;
+background: var(–locked);
+border: 1px solid var(–rule);
+border-radius: 2px;
+padding: 10px 14px;
+color: var(–ink);
+line-height: 1.6;
+white-space: pre-wrap;
+min-height: 40px;
+}
+.locked-badge {
+display: inline-flex; align-items: center; gap: 5px;
+font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
+color: #888; background: var(–warm);
+border: 1px solid var(–rule);
+border-radius: 2px; padding: 2px 7px;
+margin-left: 8px; font-weight: 500;
+}
+
+/* ── GENERATE LINK PANEL ── */
+.generate-panel {
+margin: 40px 0;
+background: #1a2a4a;
+border-radius: 4px;
+overflow: hidden;
+}
+.generate-panel-header {
+background: #0f1a30;
+padding: 16px 24px;
+display: flex; align-items: center; gap: 12px;
+}
+.generate-panel-title {
+font-family: ‘Playfair Display’, serif;
+font-size: 15px; color: #adc4ff; font-weight: 600;
+}
+.generate-panel-body { padding: 24px; }
+.generate-panel-body p { font-size: 13px; color: rgba(245,240,232,0.6); line-height: 1.7; margin-bottom: 18px; }
+.link-output {
+background: #0f1a30;
+border: 1px solid rgba(173,196,255,0.2);
+border-radius: 2px;
+padding: 12px 14px;
+font-family: ‘DM Sans’, monospace;
+font-size: 12px;
+color: #adc4ff;
+word-break: break-all;
+margin-bottom: 14px;
+display: none;
+line-height: 1.6;
+}
+.link-output.visible { display: block; }
+.generate-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* ── UPLOAD ── */
+.upload-zone {
+border: 2px dashed var(–rule);
+border-radius: 4px;
+padding: 32px 24px;
+text-align: center;
+cursor: pointer;
+transition: border-color 0.2s, background 0.2s;
+background: #fff;
+position: relative;
+}
+.upload-zone:hover, .upload-zone.dragover { border-color: var(–accent); background: rgba(139,105,20,0.04); }
+.upload-zone input[type=“file”] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+.upload-icon { font-size: 28px; margin-bottom: 8px; }
+.upload-text { font-size: 13px; color: #777; }
+.upload-text strong { color: var(–accent); font-weight: 500; }
+.upload-preview { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.upload-preview img { width: 80px; height: 80px; object-fit: cover; border-radius: 2px; border: 1px solid var(–rule); }
+
+/* ── CHECKBOX ── */
+.checkbox-field {
+background: #fff;
+border: 1px solid var(–rule);
+border-radius: 2px;
+padding: 16px;
+display: flex; gap: 14px; align-items: flex-start;
+cursor: pointer;
+transition: border-color 0.2s;
+}
+.checkbox-field:hover { border-color: var(–accent); }
+.checkbox-field input[type=“checkbox”] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(–accent); margin-top: 2px; cursor: pointer; }
+.checkbox-text { font-size: 13px; line-height: 1.65; color: #444; }
+
+/* ── SIGNATURE ── */
+.sig-wrap { border: 1px solid var(–rule); border-radius: 2px; background: #fff; overflow: hidden; }
+.sig-toolbar { background: var(–warm); padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(–rule); }
+.sig-label-small { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #888; }
+.sig-clear { font-size: 11px; color: var(–accent); background: none; border: none; cursor: pointer; font-family: ‘DM Sans’, sans-serif; letter-spacing: 0.5px; font-weight: 500; padding: 0; }
+.sig-clear:hover { text-decoration: underline; }
+canvas#sigCanvas { display: block; width: 100%; height: 160px; touch-action: none; cursor: crosshair; }
+
+/* ── ERRORS ── */
+.field-error { font-size: 11px; color: var(–error); display: none; margin-top: -3px; }
+.field.invalid input, .field.invalid select, .field.invalid textarea { border-color: var(–error); }
+.field.invalid .field-error { display: block; }
+
+/* ── TOAST ── */
+.toast {
+position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
+background: var(–ink); color: var(–cream);
+padding: 12px 24px; border-radius: 4px;
+font-size: 13px; letter-spacing: 0.3px;
+opacity: 0; transition: all 0.3s;
+pointer-events: none; z-index: 999;
+white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.error { background: var(–error); }
+.toast.success { background: var(–success); }
+
+/* ── SUCCESS SCREEN ── */
+.success-screen {
+display: none;
+max-width: 780px; margin: 60px auto; padding: 0 24px; text-align: center;
+}
+.success-screen.visible { display: block; }
+.success-icon { font-size: 64px; margin-bottom: 24px; }
+.success-screen h2 { font-family: ‘Playfair Display’, serif; font-size: 28px; margin-bottom: 12px; color: var(–success); }
+.success-screen p { font-size: 14px; color: #666; line-height: 1.7; max-width: 480px; margin: 0 auto; }
+</style>
+
+</head>
+<body>
+
+<header class="form-header">
+  <div class="header-inner">
+    <div class="brand-rule">
+      <div class="brand-dot"></div>
+      <div class="brand-text" id="headerBrandText">Client Approval Document</div>
+      <div class="brand-line"></div>
+    </div>
+    <h1>Color &amp; Finish<br>Selections Approval</h1>
+    <p class="header-sub" id="headerSub">Complete all required fields and generate a link to send to your customer for review and signature.</p>
+  </div>
+</header>
+
+<div class="mode-banner contractor" id="modeBanner">
+  <div class="mode-dot"></div>
+  <span id="modeBannerText">Contractor Mode — Fill in job details, then generate a customer link</span>
+</div>
+
+<div class="action-bar" id="actionBar">
+  <button class="btn btn-outline" id="btnExportPDF" onclick="exportPDF()" style="display:none">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+    Download PDF
+  </button>
+  <button class="btn btn-submit" id="btnSubmit" onclick="submitForm()" style="display:none">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+    Submit &amp; Download PDF
+  </button>
+</div>
+
+<div class="form-body" id="mainFormBody">
+  <form id="mainForm" novalidate>
+
+```
+<!-- SECTION 1 — Project Info -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">🧾</span>
+    <span class="section-title">Project Information</span>
+    <span class="section-num">01 / 07</span>
+  </div>
+  <div class="fields">
+    <div class="field" id="f-customerName">
+      <label class="field-label"><span class="req">*</span> Customer Name</label>
+      <input type="text" id="customerName" placeholder="Full name" required>
+      <span class="field-error">This field is required.</span>
+    </div>
+    <div class="field" id="f-projectAddress">
+      <label class="field-label"><span class="req">*</span> Project Address</label>
+      <input type="text" id="projectAddress" placeholder="Street, City, State, ZIP" required>
+      <span class="field-error">This field is required.</span>
+    </div>
+    <div class="field" id="f-projectDesc">
+      <label class="field-label">Project Description <span style="color:#aaa;font-size:10px;letter-spacing:0">(Optional)</span></label>
+      <input type="text" id="projectDesc" placeholder="Brief description of the project">
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2 — Finish Selections -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">🎨</span>
+    <span class="section-title">Interior Finish Selections</span>
+    <span class="section-num">02 / 07</span>
+  </div>
+  <div class="fields">
+    <div class="field" id="f-finishType">
+      <label class="field-label"><span class="req">*</span> Finish Type</label>
+      <select id="finishType" required>
+        <option value="">— Select —</option>
+        <option>Paint</option>
+        <option>Stain</option>
+        <option>Paint + Stain Combination</option>
+        <option>Clear Coat / Natural Finish</option>
+      </select>
+      <span class="field-error">Please select a finish type.</span>
+    </div>
+    <div class="field" id="f-paintColors">
+      <label class="field-label">Paint Color(s)</label>
+      <div class="field-hint">Include brand + color name if known</div>
+      <input type="text" id="paintColors" placeholder="e.g. Sherwin-Williams Alabaster SW 7008">
+    </div>
+    <div class="field" id="f-stainColors">
+      <label class="field-label">Stain Color(s)</label>
+      <input type="text" id="stainColors" placeholder="e.g. Minwax Early American 230">
+    </div>
+    <div class="field" id="f-finishSheen">
+      <label class="field-label">Finish Sheen</label>
+      <select id="finishSheen">
+        <option value="">— Select —</option>
+        <option>Flat</option>
+        <option>Matte</option>
+        <option>Eggshell</option>
+        <option>Satin</option>
+        <option>Semi-Gloss</option>
+        <option>Gloss</option>
+      </select>
+    </div>
+    <div class="field" id="f-surfaces">
+      <label class="field-label"><span class="req">*</span> Areas / Surfaces Being Finished</label>
+      <div class="field-hint">e.g. walls, ceilings, trim, doors, cabinets…</div>
+      <textarea id="surfaces" rows="3" placeholder="List all surfaces and areas included in this scope" required></textarea>
+      <span class="field-error">Please describe the surfaces being finished.</span>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3 — Material Details -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">🪵</span>
+    <span class="section-title">Material &amp; Surface Details</span>
+    <span class="section-num">03 / 07</span>
+  </div>
+  <div class="fields">
+    <div class="field" id="f-surfaceMaterial">
+      <label class="field-label">Surface Material</label>
+      <select id="surfaceMaterial">
+        <option value="">— Select —</option>
+        <option>Drywall</option>
+        <option>Wood (New)</option>
+        <option>Wood (Existing)</option>
+        <option>MDF / Engineered Wood</option>
+        <option>Previously Painted Surface</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="field" id="f-conditionNotes">
+      <label class="field-label">Existing Condition Notes</label>
+      <textarea id="conditionNotes" rows="3" placeholder="Note any repairs, patches, stains, or surface irregularities"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4 — Sample Verification -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">📸</span>
+    <span class="section-title">Sample Verification</span>
+    <span class="section-num">04 / 07</span>
+  </div>
+  <div class="fields">
+    <div class="field" id="f-sampleType">
+      <label class="field-label"><span class="req">*</span> Sample Type</label>
+      <select id="sampleType" required>
+        <option value="">— Select —</option>
+        <option>Paint Chip</option>
+        <option>Stain Sample</option>
+        <option>On-Wall Sample</option>
+        <option>Manufacturer Sample</option>
+        <option>Photo Only</option>
+      </select>
+      <span class="field-error">Please select a sample type.</span>
+    </div>
+    <div class="field" id="f-viewingConditions">
+      <label class="field-label"><span class="req">*</span> Viewing Conditions</label>
+      <select id="viewingConditions" required>
+        <option value="">— Select —</option>
+        <option>Viewed Indoors</option>
+        <option>Viewed Outdoors</option>
+        <option>Viewed Both Indoors and Outdoors</option>
+      </select>
+      <span class="field-error">Please select viewing conditions.</span>
+    </div>
+
+    <!-- Photo upload: visible in both modes but required only in customer mode -->
+    <div class="field" id="f-photoUpload">
+      <label class="field-label" id="photoLabel">Photo of Approved Sample / Finish <span style="color:#aaa;font-size:10px;letter-spacing:0">(Optional in contractor mode)</span></label>
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" id="photoUpload" accept="image/*" multiple onchange="handleUpload(this)">
+        <div class="upload-icon">🖼️</div>
+        <div class="upload-text">
+          <strong>Tap to upload</strong> or drag &amp; drop<br>
+          <span style="font-size:11px;">JPG, PNG, HEIC accepted</span>
+        </div>
+      </div>
+      <div class="upload-preview" id="uploadPreview"></div>
+      <span class="field-error" id="photoError">Please upload at least one photo.</span>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5 — Color Approval -->
+<div class="section" id="section-approval">
+  <div class="section-header">
+    <span class="section-icon">✅</span>
+    <span class="section-title">Color Approval</span>
+    <span class="section-num">05 / 07</span>
+  </div>
+  <div class="fields">
+    <div class="field" id="f-colorApproval">
+      <label class="field-label"><span class="req">*</span> Color Approval</label>
+      <label class="checkbox-field">
+        <input type="checkbox" id="colorApproval" required>
+        <span class="checkbox-text">I confirm that I have reviewed and approve all color and finish selections listed above.</span>
+      </label>
+      <span class="field-error">You must confirm color approval.</span>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 6 — Acknowledgment -->
+<div class="section" id="section-ack">
+  <div class="section-header">
+    <span class="section-icon">📝</span>
+    <span class="section-title">Acknowledgment &amp; Agreement</span>
+    <span class="section-num">06 / 07</span>
+  </div>
+  <div class="fields">
+    <div class="field" id="f-acknowledgment">
+      <label class="field-label"><span class="req">*</span> Acknowledgment &amp; Agreement</label>
+      <label class="checkbox-field">
+        <input type="checkbox" id="acknowledgment" required>
+        <span class="checkbox-text">
+          I acknowledge that I have reviewed and approved all color and finish selections listed in this form.<br><br>
+          I understand that variations in color, tone, and appearance may occur due to lighting conditions, surface conditions, material differences, and application methods.<br><br>
+          I understand that stain results may vary due to wood species, grain patterns, and absorption.<br><br>
+          I understand that colors may appear different once applied to full surfaces and viewed under natural lighting conditions.<br><br>
+          I agree that any changes requested after approval may result in additional costs, material delays, and scheduling adjustments.
+        </span>
+      </label>
+      <span class="field-error">You must acknowledge and agree to the terms.</span>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 7 — Signature -->
+<div class="section" id="section-sig">
+  <div class="section-header">
+    <span class="section-icon">✍️</span>
+    <span class="section-title">Signature</span>
+    <span class="section-num">07 / 07</span>
+  </div>
+  <div class="fields">
+    <div class="field" id="f-signature">
+      <label class="field-label"><span class="req">*</span> Customer Signature</label>
+      <div class="sig-wrap">
+        <div class="sig-toolbar">
+          <span class="sig-label-small">Draw your signature below</span>
+          <button type="button" class="sig-clear" onclick="clearSig()">Clear</button>
+        </div>
+        <canvas id="sigCanvas"></canvas>
+      </div>
+      <span class="field-error" id="sigError">Signature is required.</span>
+    </div>
+    <div class="field" id="f-printedName">
+      <label class="field-label"><span class="req">*</span> Printed Name</label>
+      <input type="text" id="printedName" placeholder="Full legal name" required>
+      <span class="field-error">Printed name is required.</span>
+    </div>
+    <div class="field" id="f-signDate">
+      <label class="field-label"><span class="req">*</span> Date</label>
+      <input type="date" id="signDate" required>
+      <span class="field-error">Date is required.</span>
+    </div>
+  </div>
+</div>
+```
+
+  </form>
+
+  <!-- GENERATE LINK PANEL (contractor mode only) -->
+
+  <div class="generate-panel" id="generatePanel">
+    <div class="generate-panel-header">
+      <span style="font-size:18px;">🔗</span>
+      <span class="generate-panel-title">Generate Customer Link</span>
+    </div>
+    <div class="generate-panel-body">
+      <p>Once you've filled in the job details above, click the button below. It will create a personalized link that pre-fills the form with the project information you entered. Send it to your customer — they'll review the selections, check the approval boxes, sign, and download their signed PDF.</p>
+      <div class="link-output" id="linkOutput"></div>
+      <div class="generate-actions">
+        <button class="btn btn-blue" onclick="generateLink()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Generate Link
+        </button>
+        <button class="btn btn-gold" id="copyBtn" onclick="copyLink()" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copy Link
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /form-body -->
+
+<!-- SUCCESS SCREEN -->
+
+<div class="success-screen" id="successScreen">
+  <div class="success-icon">✅</div>
+  <h2>Approval Submitted</h2>
+  <p>Thank you — your color and finish selections have been approved and your signed PDF has been downloaded. Please keep a copy for your records.</p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// MODE DETECTION
+// ═══════════════════════════════════════════════════
+const urlParams = new URLSearchParams(window.location.search);
+const isCustomerMode = urlParams.has('d');
+let customerRequiresPhoto = false; // set true in customer mode
+
+function initMode() {
+  if (isCustomerMode) {
+    enterCustomerMode();
+  } else {
+    enterContractorMode();
+  }
+}
+
+function enterContractorMode() {
+  // Show contractor UI
+  document.getElementById('modeBanner').className = 'mode-banner contractor';
+  document.getElementById('modeBannerText').textContent = 'Contractor Mode — Fill in job details, then generate a customer link';
+  document.getElementById('headerSub').textContent = 'Fill in the project information below, then generate a secure link to send to your customer for review and signature.';
+
+  // Show generate panel, hide submit/pdf buttons
+  document.getElementById('generatePanel').style.display = '';
+  document.getElementById('btnSubmit').style.display = 'none';
+  document.getElementById('btnExportPDF').style.display = 'none';
+
+  // Hide approval/sig sections in contractor mode (customer fills those)
+  document.getElementById('section-approval').style.display = 'none';
+  document.getElementById('section-ack').style.display = 'none';
+  document.getElementById('section-sig').style.display = 'none';
+
+  // Photo is optional for contractor
+  document.getElementById('photoLabel').innerHTML = 'Photo of Approved Sample / Finish <span style="color:#aaa;font-size:10px;letter-spacing:0">(Optional — customer can also upload)</span>';
+}
+
+function enterCustomerMode() {
+  // Banner
+  document.getElementById('modeBanner').className = 'mode-banner customer';
+  document.getElementById('modeBannerText').textContent = 'Customer Review — Please review your selections, then sign and submit';
+  document.getElementById('headerSub').textContent = 'Your contractor has pre-filled the project details below. Please review everything carefully, then scroll down to sign and approve.';
+
+  // Hide generate panel
+  document.getElementById('generatePanel').style.display = 'none';
+
+  // Show action buttons
+  document.getElementById('btnSubmit').style.display = '';
+
+  // Photo required for customer
+  customerRequiresPhoto = true;
+  document.getElementById('photoLabel').innerHTML = '<span class="req">*</span> Photo of Approved Sample / Finish';
+
+  // Load data from URL
+  try {
+    const raw = urlParams.get('d');
+    const data = JSON.parse(atob(raw));
+    populateFromData(data);
+    lockContractorFields();
+  } catch(e) {
+    showToast('Could not load form data. Please contact your contractor.', 'error');
+  }
+}
+
+function populateFromData(data) {
+  const fields = ['customerName','projectAddress','projectDesc','finishType','paintColors','stainColors','finishSheen','surfaces','surfaceMaterial','conditionNotes','sampleType','viewingConditions'];
+  fields.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el || !data[id]) return;
+    el.value = data[id];
+  });
+}
+
+function lockContractorFields() {
+  const toLock = ['customerName','projectAddress','projectDesc','finishType','paintColors','stainColors','finishSheen','surfaces','surfaceMaterial','conditionNotes','sampleType','viewingConditions'];
+  toLock.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const val = el.value || '—';
+    const locked = document.createElement('div');
+    locked.className = 'locked-field';
+    locked.textContent = val === '—' ? '—' : val;
+    el.replaceWith(locked);
+  });
+
+  // Mark field labels with locked badge
+  const fieldLabels = document.querySelectorAll('.section:not(#section-approval):not(#section-ack):not(#section-sig) .field-label');
+  fieldLabels.forEach(label => {
+    const badge = document.createElement('span');
+    badge.className = 'locked-badge';
+    badge.textContent = 'Pre-filled';
+    label.appendChild(badge);
+  });
+}
+
+// ═══════════════════════════════════════════════════
+// GENERATE LINK (contractor)
+// ═══════════════════════════════════════════════════
+function generateLink() {
+  const data = {
+    customerName: document.getElementById('customerName').value.trim(),
+    projectAddress: document.getElementById('projectAddress').value.trim(),
+    projectDesc: document.getElementById('projectDesc').value.trim(),
+    finishType: document.getElementById('finishType').value,
+    paintColors: document.getElementById('paintColors').value.trim(),
+    stainColors: document.getElementById('stainColors').value.trim(),
+    finishSheen: document.getElementById('finishSheen').value,
+    surfaces: document.getElementById('surfaces').value.trim(),
+    surfaceMaterial: document.getElementById('surfaceMaterial').value,
+    conditionNotes: document.getElementById('conditionNotes').value.trim(),
+    sampleType: document.getElementById('sampleType').value,
+    viewingConditions: document.getElementById('viewingConditions').value,
+  };
+
+  if (!data.customerName || !data.projectAddress || !data.finishType || !data.surfaces) {
+    showToast('Please fill in Customer Name, Address, Finish Type, and Surfaces first', 'error');
+    return;
+  }
+
+  const encoded = btoa(JSON.stringify(data));
+  const url = window.location.origin + window.location.pathname + '?d=' + encoded;
+
+  const linkOutput = document.getElementById('linkOutput');
+  linkOutput.textContent = url;
+  linkOutput.classList.add('visible');
+  document.getElementById('copyBtn').style.display = '';
+  showToast('Link generated!', 'success');
+
+  // Store for copy
+  window._generatedLink = url;
+}
+
+function copyLink() {
+  if (!window._generatedLink) return;
+  navigator.clipboard.writeText(window._generatedLink)
+    .then(() => showToast('Link copied to clipboard!', 'success'))
+    .catch(() => {
+      // fallback
+      const ta = document.createElement('textarea');
+      ta.value = window._generatedLink;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('Link copied!', 'success');
+    });
+}
+
+// ═══════════════════════════════════════════════════
+// SIGNATURE CANVAS
+// ═══════════════════════════════════════════════════
+const canvas = document.getElementById('sigCanvas');
+const ctx = canvas.getContext('2d');
+let drawing = false, hasSig = false;
+
+function resizeCanvas() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  const imgData = hasSig ? canvas.toDataURL() : null;
+  canvas.width = rect.width * dpr;
+  canvas.height = 160 * dpr;
+  ctx.scale(dpr, dpr);
+  ctx.strokeStyle = '#1a1a18';
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  if (imgData) {
+    const img = new Image();
+    img.onload = () => ctx.drawImage(img, 0, 0, rect.width, 160);
+    img.src = imgData;
+  }
+}
+resizeCanvas();
+window.addEventListener('resize', () => setTimeout(resizeCanvas, 50));
+
+function getPos(e) {
+  const r = canvas.getBoundingClientRect();
+  if (e.touches) return { x: e.touches[0].clientX - r.left, y: e.touches[0].clientY - r.top };
+  return { x: e.clientX - r.left, y: e.clientY - r.top };
+}
+
+canvas.addEventListener('mousedown', e => { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); });
+canvas.addEventListener('mousemove', e => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); hasSig = true; });
+canvas.addEventListener('mouseup', () => drawing = false);
+canvas.addEventListener('mouseleave', () => drawing = false);
+canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); }, { passive: false });
+canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); hasSig = true; }, { passive: false });
+canvas.addEventListener('touchend', () => drawing = false);
+
+function clearSig() {
+  const r = canvas.getBoundingClientRect();
+  ctx.clearRect(0, 0, r.width, 200);
+  hasSig = false;
+}
+
+// ═══════════════════════════════════════════════════
+// FILE UPLOAD
+// ═══════════════════════════════════════════════════
+const uploadedFiles = [];
+const uploadedDataURLs = [];
+
+function handleUpload(input) {
+  const preview = document.getElementById('uploadPreview');
+  Array.from(input.files).forEach(file => {
+    uploadedFiles.push(file);
+    const r = new FileReader();
+    r.onload = e => {
+      uploadedDataURLs.push(e.target.result);
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      preview.appendChild(img);
+    };
+    r.readAsDataURL(file);
+  });
+}
+
+const zone = document.getElementById('uploadZone');
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('dragover'); handleUpload({ files: e.dataTransfer.files }); });
+
+// ═══════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  setTimeout(() => t.className = 'toast', 3200);
+}
+
+// ═══════════════════════════════════════════════════
+// VALIDATION (customer mode only)
+// ═══════════════════════════════════════════════════
+function validate() {
+  let ok = true;
+
+  ['colorApproval','acknowledgment'].forEach(id => {
+    const el = document.getElementById(id);
+    const f = document.getElementById('f-' + id);
+    if (!el.checked) { f.classList.add('invalid'); ok = false; }
+    else f.classList.remove('invalid');
+  });
+
+  ['printedName','signDate'].forEach(id => {
+    const el = document.getElementById(id);
+    const f = document.getElementById('f-' + id);
+    if (!el.value.trim()) { f.classList.add('invalid'); ok = false; }
+    else f.classList.remove('invalid');
+  });
+
+  if (customerRequiresPhoto && uploadedFiles.length === 0) {
+    document.getElementById('f-photoUpload').classList.add('invalid');
+    document.getElementById('photoError').style.display = 'block';
+    ok = false;
+  } else {
+    document.getElementById('f-photoUpload').classList.remove('invalid');
+    document.getElementById('photoError').style.display = 'none';
+  }
+
+  const fSig = document.getElementById('f-signature');
+  const sigErr = document.getElementById('sigError');
+  if (!hasSig) {
+    fSig.classList.add('invalid'); sigErr.style.display = 'block'; ok = false;
+  } else { fSig.classList.remove('invalid'); sigErr.style.display = 'none'; }
+
+  return ok;
+}
+
+// ═══════════════════════════════════════════════════
+// SUBMIT
+// ═══════════════════════════════════════════════════
+function submitForm() {
+  if (!validate()) {
+    showToast('Please complete all required fields', 'error');
+    const first = document.querySelector('.field.invalid');
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  exportPDF(true);
+}
+
+// ═══════════════════════════════════════════════════
+// COLLECT DATA
+// ═══════════════════════════════════════════════════
+function collectData() {
+  const get = id => {
+    const el = document.getElementById(id);
+    if (!el) {
+      // locked field
+      const locked = document.querySelector(`#f-${id} .locked-field`);
+      return locked ? locked.textContent : '';
+    }
+    return el.value || el.textContent || '';
+  };
+  return {
+    customerName: get('customerName'),
+    projectAddress: get('projectAddress'),
+    projectDesc: get('projectDesc'),
+    finishType: get('finishType'),
+    paintColors: get('paintColors'),
+    stainColors: get('stainColors'),
+    finishSheen: get('finishSheen'),
+    surfaces: get('surfaces'),
+    surfaceMaterial: get('surfaceMaterial'),
+    conditionNotes: get('conditionNotes'),
+    sampleType: get('sampleType'),
+    viewingConditions: get('viewingConditions'),
+    colorApproval: document.getElementById('colorApproval') ? document.getElementById('colorApproval').checked : false,
+    acknowledgment: document.getElementById('acknowledgment') ? document.getElementById('acknowledgment').checked : false,
+    printedName: document.getElementById('printedName') ? document.getElementById('printedName').value : '',
+    signDate: document.getElementById('signDate') ? document.getElementById('signDate').value : '',
+  };
+}
+
+// ═══════════════════════════════════════════════════
+// PDF EXPORT
+// ═══════════════════════════════════════════════════
+async function exportPDF(afterSubmit = false) {
+  const { jsPDF } = window.jspdf;
+  const d = collectData();
+  const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+  const W = doc.internal.pageSize.getWidth();
+  const mg = 54;
+  let y = 0;
+
+  // Header
+  doc.setFillColor(26, 26, 24);
+  doc.rect(0, 0, W, 75, 'F');
+  doc.setTextColor(245, 240, 232);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(20);
+  doc.text('Color & Finish Selections Approval', mg, 42);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(180, 165, 140);
+  doc.text('Meat and Potatoes Carpentry LLC  ·  Client Approval Document', mg, 60);
+  y = 100;
+
+  const newPageIfNeeded = (h = 40) => {
+    if (y + h > 730) { doc.addPage(); y = mg; }
+  };
+
+  const drawSection = (title) => {
+    newPageIfNeeded(30);
+    doc.setFillColor(26, 26, 24);
+    doc.rect(mg - 8, y - 13, W - (mg - 8) * 2, 24, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.setTextColor(245, 240, 232);
+    doc.text(title, mg, y + 4);
+    y += 26;
+    doc.setTextColor(26, 26, 24);
+  };
+
+  const drawRow = (label, value) => {
+    const safeVal = (value || '—').toString();
+    const lines = doc.splitTextToSize(safeVal, W - mg * 2 - 10);
+    const rowH = Math.max(lines.length * 15 + 18, 34);
+    newPageIfNeeded(rowH);
+    doc.setFillColor(250, 247, 242);
+    doc.rect(mg - 8, y - 4, W - (mg - 8) * 2, rowH, 'F');
+    doc.setDrawColor(200, 191, 170);
+    doc.rect(mg - 8, y - 4, W - (mg - 8) * 2, rowH, 'S');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(139, 105, 20);
+    doc.text(label.toUpperCase(), mg, y + 7);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(40, 40, 40);
+    doc.text(lines, mg, y + 20);
+    y += rowH + 4;
+  };
+
+  drawSection('1 — Project Information');
+  y += 4;
+  drawRow('Customer Name', d.customerName);
+  drawRow('Project Address', d.projectAddress);
+  if (d.projectDesc) drawRow('Project Description', d.projectDesc);
+  y += 8;
+
+  drawSection('2 — Interior Finish Selections');
+  y += 4;
+  drawRow('Finish Type', d.finishType);
+  if (d.paintColors) drawRow('Paint Color(s)', d.paintColors);
+  if (d.stainColors) drawRow('Stain Color(s)', d.stainColors);
+  if (d.finishSheen) drawRow('Finish Sheen', d.finishSheen);
+  drawRow('Areas / Surfaces Being Finished', d.surfaces);
+  y += 8;
+
+  drawSection('3 — Material & Surface Details');
+  y += 4;
+  drawRow('Surface Material', d.surfaceMaterial || 'Not specified');
+  if (d.conditionNotes) drawRow('Existing Condition Notes', d.conditionNotes);
+  y += 8;
+
+  drawSection('4 — Sample Verification');
+  y += 4;
+  drawRow('Sample Type', d.sampleType);
+  drawRow('Viewing Conditions', d.viewingConditions);
+  drawRow('Photos Attached', uploadedFiles.length > 0 ? uploadedFiles.length + ' photo(s) — see last page' : 'None');
+  y += 8;
+
+  drawSection('5 & 6 — Approvals & Acknowledgment');
+  y += 4;
+  drawRow('Color Approval', d.colorApproval ? '☑ Confirmed' : '☐ Not confirmed');
+  drawRow('Acknowledgment & Agreement', d.acknowledgment ? '☑ Agreed to all terms' : '☐ Not confirmed');
+  y += 8;
+
+  drawSection('7 — Signature');
+  y += 8;
+
+  if (hasSig) {
+    newPageIfNeeded(80);
+    const sigData = canvas.toDataURL('image/png');
+    doc.addImage(sigData, 'PNG', mg, y, 220, 65);
+    y += 70;
+    doc.setDrawColor(180, 165, 140);
+    doc.setLineWidth(0.5);
+    doc.line(mg, y, mg + 220, y);
+    y += 6;
+  }
+
+  drawRow('Printed Name', d.printedName);
+  drawRow('Date', d.signDate);
+
+  // Photos page
+  if (uploadedDataURLs.length > 0) {
+    doc.addPage();
+    y = mg;
+    drawSection('Attached Photos');
+    y += 12;
+    for (const src of uploadedDataURLs) {
+      newPageIfNeeded(160);
+      doc.addImage(src, 'JPEG', mg, y, 210, 158);
+      y += 168;
+    }
+  }
+
+  const filename = `Color-Finish-Approval_${(d.customerName || 'Form').replace(/\s+/g,'-')}_${d.signDate || 'Unsigned'}.pdf`;
+  doc.save(filename);
+  showToast('Signed PDF downloaded', 'success');
+
+  if (afterSubmit) {
+    document.getElementById('mainFormBody').style.display = 'none';
+    document.getElementById('modeBanner').style.display = 'none';
+    document.getElementById('successScreen').classList.add('visible');
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+document.getElementById('signDate').value = new Date().toISOString().split('T')[0];
+initMode();
+</script>
+
+</body>
+</html>
