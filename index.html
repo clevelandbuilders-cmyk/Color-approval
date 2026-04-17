@@ -5,21 +5,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Color & Finish Selections Approval</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-  :root {
-    --ink: #1a1a18;
-    --cream: #f5f0e8;
-    --warm: #e8e0d0;
-    --accent: #8b6914;
-    --accent-light: #c9a84c;
-    --rule: #c8bfaa;
-    --error: #8b2000;
-    --success: #2d5a27;
-    --section-bg: #faf7f2;
-    --locked: #f0ece4;
-  }
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+–ink: #1a1a18;
+–cream: #f5f0e8;
+–warm: #e8e0d0;
+–accent: #8b6914;
+–accent-light: #c9a84c;
+–rule: #c8bfaa;
+–error: #8b2000;
+–success: #2d5a27;
+–section-bg: #faf7f2;
+–locked: #f0ece4;
+}
+
+/* Hardcoded fallbacks so styling never depends solely on CSS variables */
+.form-header { background-color: #1a1a18 !important; color: #f5f0e8 !important; }
+.section-header { background-color: #1a1a18 !important; color: #f5f0e8 !important; }
+.action-bar { background-color: #1a1a18 !important; }
+body { background-color: #f5f0e8; }
 
 - { box-sizing: border-box; margin: 0; padding: 0; }
 
